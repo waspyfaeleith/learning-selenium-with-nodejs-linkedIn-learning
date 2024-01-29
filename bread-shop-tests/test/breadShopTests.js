@@ -1,17 +1,19 @@
 //const { expect } = require("chai");
 import { expect } from "chai";
 import { Builder, By, Select } from "selenium-webdriver";
+import { SandwichPage } from "../page_models/sandwichPage.js";
+//const { SandwichPage } = require("../page_models/sandwichPage");
 
 describe("sandwich order", function () {
   this.timeout(5000);
   let driver;
+  let sandwichPage;
 
   beforeEach(async function () {
     // setup/arrange
     await driver.get("http://localhost:4200/order/sandwich");
-    let title = await driver.getTitle();
-
-    expect(title).to.equal("Order a Sandwich | BreadShop");
+    sandwichPage = new SandwichPage(driver);
+    sandwichPage.validatePage();
   });
 
   after(async function () {
@@ -28,28 +30,36 @@ describe("sandwich order", function () {
   it("selects the bread type", async function () {
 
     // act
-    let ryeBreadOption = await driver.findElement(By.id("bread-type-rye"));
-    await ryeBreadOption.click();
+    await sandwichPage.selectRyeBreadOption();
 
     //assert
-    let selectedElement = await driver.findElement(By.className("bread-type-value"));
-    let selectedValue = await selectedElement.getText();
+    let selectedValue = await sandwichPage.getBreadTypeOverview();
 
     expect(selectedValue).to.equal("rye bread");
   });
 
   it("selects the main filling", async function () {
 
-    // act
-    let mainFillingElement = await driver.findElement(By.id("form-select-main-filling"));
-    let select = new Select(mainFillingElement);
-    await select.selectByValue("tofu");
+    await sandwichPage.selectTofuFillingOption();
 
 
     //assert
-    let selectedElement = await driver.findElement(By.className("main-filling-value"));
-    let selectedValue = await selectedElement.getText();
+    let selectedValue = await sandwichPage.getMainFillingOverview();
 
     expect(selectedValue).to.equal("tofu");
   });
+
+  it("updates the total price when the bread type is selected", async function() {
+    // act
+
+    expect(await sandwichPage.getTotalPrice()).to.equal("$0");
+
+    await sandwichPage.selectRyeBreadOption();
+
+    // assert
+    expect(await sandwichPage.getTotalPrice()).to.equal("$6");
+
+  });
+
+  
 });
