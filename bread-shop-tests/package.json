@@ -1,0 +1,19 @@
+{
+  "name": "bread-shop-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^5.0.3",
+    "mocha": "^10.2.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "selenium-webdriver": "^4.17.0"
+  }
+}
