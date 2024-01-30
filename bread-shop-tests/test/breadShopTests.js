@@ -61,5 +61,21 @@ describe("sandwich order", function () {
 
   });
 
-  
+  it("selects tomatoes and ketchup extras", async function() {
+    await sandwichPage.selectExtraOption("extra-option-1");
+    await sandwichPage.selectExtraOption("extra-option-3");
+
+    expect(await sandwichPage.selectedExtraFillingOveview()).to.equal("tomatoes, ketchup");
+
+  });
+
+  // suggested solution
+  it("selects extra fillings", async function() {
+    // act
+    await sandwichPage.selectExtraSaladFilling();
+    await sandwichPage.selectExtraKetchupFilling();
+
+    // assert
+    expect(await sandwichPage.selectedExtraFillingOveview()).to.equal("salad, ketchup");
+  });
 });
