@@ -94,4 +94,29 @@ describe("sandwich order", function () {
     // assert
     expect(await sandwichPage.selectedExtraFillingOveview()).to.equal("salad, ketchup");
   });
+
+  describe("when the network has high latency", function() {
+    beforeEach(async function() {
+      await driver.setNetworkConditions({
+        offline: false,
+        latency: 1000,
+        download_throughput: 35*1024,
+        upload_throughput: 50*1024
+      });
+    });
+
+    afterEach(async function() {
+      await driver.deleteNetworkConditions();
+    });
+
+    it("displays spinning wheel when checking promo code", async function() {
+        // act
+        await sandwichPage.setValidPromoCode();
+        await sandwichPage.redeemPromoCode();
+
+        // assert
+        expect(await sandwichPage.getSpinner().isDisplayed()).to.be.true;
+    });
+
+  });
 });

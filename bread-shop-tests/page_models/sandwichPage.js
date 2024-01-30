@@ -1,4 +1,4 @@
-import { By, Select } from "selenium-webdriver";
+import { By, Select, until } from "selenium-webdriver";
 
 class SandwichPage {
   
@@ -32,7 +32,9 @@ class SandwichPage {
   }
 
   getTotalPrice() {
-    return this.driver.findElement(By.className("total-price")).getText();
+    return this.driver.wait(until.elementLocated(By.className("total-price")), 1000, 
+      "Total price was not located", 6)
+      .getText();
   }
 
   selectTomatoExtraOption() {
@@ -58,6 +60,18 @@ class SandwichPage {
 
   getBreadTypePlaceholders() {
     return this.driver.findElements(By.className("bread-type-placeholder"));
+  }
+
+  setValidPromoCode() {
+    return this.driver.findElement(By.className('form-input-promo-code')).sendKeys('SPRING10');
+  }
+
+  redeemPromoCode() {
+    return this.driver.findElement(By.className("redeem-promo-code")).click();
+  }
+
+  getSpinner() {
+    return this.driver.findElement(By.css(".redeem-promo-code .spinner-border"));
   }
 }
 
