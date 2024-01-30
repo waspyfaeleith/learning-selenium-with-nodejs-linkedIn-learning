@@ -55,6 +55,10 @@ class SandwichPage {
   selectExtraKetchupFilling() {
     return this.driver.findElement(By.css("[value=ketchup]")).click();
   }
+
+  getBreadTypePlaceholders() {
+    return this.driver.findElements(By.className("bread-type-placeholder"));
+  }
 }
 
 export { SandwichPage }

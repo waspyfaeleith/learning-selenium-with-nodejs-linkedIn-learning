@@ -27,31 +27,44 @@ describe("sandwich order", function () {
 
   });
 
-  it("selects the bread type", async function () {
+  describe("bread type selection", function() {
+    it("displays the selected value", async function () {
 
-    // act
-    await sandwichPage.selectRyeBreadOption();
+      // act
+      await sandwichPage.selectRyeBreadOption();
+  
+      // assert
+      let selectedValue = await sandwichPage.getBreadTypeOverview();
+  
+      expect(selectedValue).to.equal("rye bread");
+    });
 
-    //assert
-    let selectedValue = await sandwichPage.getBreadTypeOverview();
+    it("removes the placeholder text", async function () {
 
-    expect(selectedValue).to.equal("rye bread");
+      // act
+      await sandwichPage.selectRyeBreadOption();
+  
+      // assert
+      let breadTypePlaceholders = await sandwichPage.getBreadTypePlaceholders();
+      expect(breadTypePlaceholders).to.have.length(0);
+    });
   });
+  
 
   it("selects the main filling", async function () {
 
+    // act
     await sandwichPage.selectTofuFillingOption();
 
-
-    //assert
+    // assert
     let selectedValue = await sandwichPage.getMainFillingOverview();
 
     expect(selectedValue).to.equal("tofu");
   });
 
   it("updates the total price when the bread type is selected", async function() {
+    
     // act
-
     expect(await sandwichPage.getTotalPrice()).to.equal("$0");
 
     await sandwichPage.selectRyeBreadOption();
@@ -62,9 +75,12 @@ describe("sandwich order", function () {
   });
 
   it("selects tomatoes and ketchup extras", async function() {
+    
+    // act
     await sandwichPage.selectExtraOption("extra-option-1");
     await sandwichPage.selectExtraOption("extra-option-3");
 
+    // assert
     expect(await sandwichPage.selectedExtraFillingOveview()).to.equal("tomatoes, ketchup");
 
   });
